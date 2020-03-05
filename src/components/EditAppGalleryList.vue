@@ -2,14 +2,18 @@
 <b-row>
     <b-col cols="12">
       <h2>
-        E2M Event Android App Gallery<br>
+        E2M Event Android App Gallery
+        <b-link href="#/add-appgallery">(Add AppDetail)</b-link>
+        <b-button @click.stop="logout()">Logout</b-button>
       </h2>
       Here All Apps that are hosted in Mars Server can be found in the downlink in the respective section.
-      To Modify Please <b-link href="#/login">Login</b-link>
       <b-table striped hover :items="appgallery" :fields="fields">
         <template v-slot:cell(download)="data">
           <b-button v-bind:href = "data.item.download">Download</b-button>
       </template>
+        <template v-slot:cell(actions)="data">
+          <b-button @click.stop="edit(data.item)" variant="primary">Edit</b-button>
+        </template>
       </b-table>
     </b-col>
   </b-row>
@@ -19,9 +23,10 @@
 <script>
 
 import firebase from '../Firebase'
+import router from '../router'
 
 export default {
-  name: 'AppGallery',
+  name: 'EditAppGalleryList',
   data () {
     return {
       fields: [
@@ -32,6 +37,7 @@ export default {
         { key: 'cmsurl', label: 'CMS URL', sortable: true, 'class': 'text-left' },
         { key: 'appid', label: 'AppId', sortable: true, 'class': 'text-left' },
         { key: 'download', label: 'Download', sortable: true, 'class': 'text-left' },
+        { key: 'actions', label: 'Edit', 'class': 'text-center' }
       ],
       appgallery: [],
       errors: [],
@@ -56,7 +62,13 @@ export default {
     });
   },
   methods: {
-    
+    edit (appgalleryItem) {
+      router.push({ name: 'ShowAppDetails', params: { id: appgalleryItem.key }})
+    },
+    logout : function(){
+       firebase.auth().signOut().then(() =>{ this.$router.replace('login')}
+       )
+    }
   }
 }
 </script>
