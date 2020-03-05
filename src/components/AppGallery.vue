@@ -7,6 +7,9 @@
       Here All Apps that are hosted in Mars Server can be found in the downlink in the respective section.
       To Modify Please <b-link href="#/login">Login</b-link>
       <b-table striped hover :items="appgallery" :fields="fields">
+        <template v-slot:cell(cmsurl)="data">
+          <b-link v-bind:href="data.item.cmsurl" target="_blank">{{data.item.cmsurl}}</b-link>
+        </template>
         <template v-slot:cell(download)="data">
           <b-button v-bind:href = "data.item.download">Download</b-button>
       </template>
