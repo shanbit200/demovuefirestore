@@ -4,12 +4,14 @@
       <h2>
         E2M Event Android App Gallery
         <b-link href="#/add-appgallery">(Add AppDetail)</b-link>
-        <b-button @click.stop="logout()">Logout</b-button>
+        <b-button @click.stop="logout()">Logout</b-button><br>
+        <b-button href="#/EditHome">Home</b-button>
       </h2>
       Here All Apps that are hosted in Mars Server can be found in the downlink in the respective section.
       <b-table striped hover :items="appgallery" :fields="fields">
         <template v-slot:cell(download)="data">
-          <b-button v-bind:href = "data.item.download">Download</b-button>
+            <b-button v-bind:href = "data.item.download" variant="transparent">
+            <img src="../assets/download.jpg" height="40" width="40" /></b-button> 
       </template>
         <template v-slot:cell(actions)="data">
           <b-button @click.stop="edit(data.item)" variant="primary">Edit</b-button>

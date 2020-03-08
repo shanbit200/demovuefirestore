@@ -12,6 +12,8 @@ import SignUp from '@/components/SignUp.vue';
 import firebase from 'firebase';
 import Vue from 'vue';
 import EditAppGalleryList from '@/components/EditAppGalleryList.vue';
+import Home from '@/components/Home.vue';
+import EditHome from '@/components/EditHome.vue';
 
 
 
@@ -70,8 +72,21 @@ const router = new Router({
   routes: [
   {
     path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/AppGallery',
     name: 'AppGallery',
     component: AppGallery
+  },
+  {
+    path: '/EditHome',
+    name: 'EditHome',
+    component: EditHome,
+    meta:{
+      requireAuth:true
+    }
   },
   {
     path: '/EditAppGalleryList',
@@ -146,7 +161,7 @@ router.beforeEach((to,from,next)=>{
   const requiresAuth = to.matched.some(record => record.meta.requireAuth);
   
   if(requiresAuth && !currentuser) next('login');
-  else if(!requiresAuth && currentuser) next('EditAppGalleryList');
+  else if(!requiresAuth && currentuser) next('EditHome');
   else next()
 });
 

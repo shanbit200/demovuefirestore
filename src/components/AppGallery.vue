@@ -11,7 +11,9 @@
           <b-link v-bind:href="data.item.cmsurl" target="_blank">{{data.item.cmsurl}}</b-link>
         </template>
         <template v-slot:cell(download)="data">
-          <b-button v-bind:href = "data.item.download">Download</b-button>
+          <b-button v-bind:href = "data.item.download" variant="transparent">
+            <img src="../assets/download.jpg" height="40" width="40" /></b-button> 
+          <!-- <img src="../assets/download.jpg" v-on:click="data.item.download"/> -->
       </template>
       </b-table>
     </b-col>
