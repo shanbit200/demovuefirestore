@@ -56,7 +56,16 @@
                     label="Enter App Download Link">
             <b-form-input id="download" v-model.trim="appgallery.download"></b-form-input>
           </b-form-group>
-          
+           <b-form-group id="uploadGroup"
+                    horizontal
+                    :label-cols="4"
+                    breakpoint="md"
+                    label="Upload an build to Firebase">
+                 <input type="file" @change="previewImage" accept="/*" >     
+                  Progress: {{uploadValue.toFixed()+"%"}}
+                 <progress id="progress" :value="uploadValue" max="100" ></progress>
+                 <b-button  v-if="imageData!=null" @click="onUpload">Upload</b-button>
+           </b-form-group>
           <b-button type="submit" variant="primary">Save</b-button>
         </b-form>
       </b-jumbotron>
@@ -74,10 +83,33 @@ export default {
   data () {
     return {
       ref: firebase.firestore().collection('appgallery'),
-      appgallery: {}
+      appgallery: {},
+      imageData: null,  
+      picture: null,
+      uploadValue: 0
     }
   },
   methods: {
+    previewImage(event) {
+      this.uploadValue=0;
+      this.picture=null;
+      this.imageData = event.target.files[0];
+    },
+    onUpload(){
+      this.picture=null;
+      const storageRef=firebase.storage().ref(`${this.imageData.name}`).put(this.imageData);
+      storageRef.on(`state_changed`,snapshot=>{
+        this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+      }, error=>{console.log(error.message)},
+      ()=>{this.uploadValue=100;
+        storageRef.snapshot.ref.getDownloadURL().then((url)=>{
+          this.picture =url;
+          this.appgallery.download = this.picture;
+          console.log("URL"+url)
+        });
+      }      
+      );
+    },
     onSubmit (evt) {
       evt.preventDefault()
 

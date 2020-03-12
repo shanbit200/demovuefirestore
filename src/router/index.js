@@ -14,6 +14,7 @@ import Vue from 'vue';
 import EditAppGalleryList from '@/components/EditAppGalleryList.vue';
 import Home from '@/components/Home.vue';
 import EditHome from '@/components/EditHome.vue';
+import Upload from '@/components/Upload.vue';
 
 
 
@@ -140,6 +141,14 @@ const router = new Router({
     path: '/show-appdetails/:id',
     name: 'ShowAppDetails',
     component: ShowAppDetails,
+    meta:{
+      requireAuth:true
+    }
+  },
+  {
+    path: '/Upload',
+    name: 'Upload',
+    component: Upload,
     meta:{
       requireAuth:true
     }
